@@ -1,26 +1,1047 @@
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap');
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+@font-face {
+  font-family: 'Bebas Neue';
+  src: url('/fonts/BebasNeue-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
 @theme inline {
+  --font-sans: 'IBM Plex Sans', sans-serif;
+  --font-bebas-neue: 'Bebas Neue', sans-serif;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary: #e7c9a5;
+  --color-primary-foreground: #0f172a;
+  --color-primary-admin: #25388c;
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* Couleurs personnalisées */
+  --green-100: #ecfdf3;
+  --green-400: #4c7b62;
+  --green-500: #2cc171;
+  --green-800: #027a48;
+  --red-400: #f46f70;
+  --red-500: #e27233;
+  --red-800: #ef3a4b;
+  --blue-100: #0089f1;
+  --light-100: #d8d9df;
+  --light-200: #eed1ac;
+  --light-300: #f8f8ff;
+  --light-400: #edf1f1;
+  --light-500: #8d8d8d;
+  --light-600: #f9fafb;
+  --light-700: #e2e8f0;
+  --light-800: #f8fafc;
+  --dark-100: #16191e;
+  --dark-200: #3a354e;
+  --dark-300: #232839;
+  --dark-400: #1e293b;
+  --dark-500: #0f172a;
+  --dark-600: #333c5c;
+  --dark-700: #464f6f;
+  --dark-800: #1e2230;
+  --gray-100: #cbd5e1;
+
+  /* Breakpoints */
+  --xs: 480px;
+
+  /* Background images */
+  --pattern: url('/images/pattern.webp');
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --primary: 30 52% 78%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 210 40% 96.1%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 214.3 31.8% 91.4%;
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  --card: 222.2 84% 4.9%;
+  --card-foreground: 210 40% 98%;
+  --popover: 222.2 84% 4.9%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 30 52% 78%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  --secondary: 217.2 32.6% 17.5%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 215 20.2% 65.1%;
+  --accent: 217.2 32.6% 17.5%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: 212.7 26.8% 83.9%;
+  --chart-1: 220 70% 50%;
+  --chart-2: 160 60% 45%;
+  --chart-3: 30 80% 55%;
+  --chart-4: 280 65% 60%;
+  --chart-5: 340 75% 55%;
+}
+
+@layer base {
+  .hide-scrollbar::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+    border-radius: 0px;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 0px;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: transparent;
+  }
+
+  /* Styles pour le corps de la page */
+  body {
+    @apply bg-background text-foreground;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  /* Bouton principal de formulaire - utilisé pour tous les boutons d'action (connexion, inscription, validation) */
+  .form-btn {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--dark-100));
+    border-radius: 0.375rem;
+    padding: 0.5rem 1.5rem;
+    font-weight: 700;
+    font-size: 0.875rem;
+    line-height: 1rem;
+    min-height: 3.5rem;
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.15s ease-in-out;
+  }
+
+  .form-btn:hover {
+    background-color: hsl(var(--primary));
+  }
+
+  /* Champ de saisie de formulaire - inputs text, email, password avec style sombre */
+  .form-input {
+    width: 100% !important;
+    min-height: 3.5rem !important;
+    border: none !important;
+    border-radius: 0.5rem !important;
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    background-color: #1e2128 !important;
+    padding: 0.75rem 1rem !important;
+    transition: all 0.2s ease-in-out !important;
+  }
+
+  /* Placeholder */
+  .form-input::placeholder {
+    font-weight: 400 !important;
+    color: var(--light-100) !important;
+  }
+
+  /* Supprimer TOUS les effets de focus/ring/surbrillance */
+  .form-input:focus,
+  .form-input:focus-visible,
+  .form-input:focus-within {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    background-color: #252a34 !important;
+    --tw-ring-color: transparent !important;
+  }
+
+  /* Titre du livre - affichage avec troncature élégante, taille responsive */
+  .book-title {
+    margin-top: 0.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+  }
+
+  @media (min-width: 475px) {
+    .book-title {
+      font-size: 1.25rem;
+    }
+  }
+
+  /* Genre du livre - affiché en italique avec couleur claire */
+  .book-genre {
+    margin-top: 0.25rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 0.875rem;
+    font-style: italic;
+    color: var(--light-100);
+  }
+
+  @media (min-width: 475px) {
+    .book-genre {
+      font-size: 1rem;
+    }
+  }
+
+  /* Indicateur de statut d'emprunt - centré sur mobile, aligné à gauche sur desktop */
+  .book-loaned {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  @media (max-width: 474px) {
+    .book-loaned {
+      justify-content: center;
+    }
+  }
+
+  /* Bouton d'action pour emprunter/réserver un livre */
+  .book-btn {
+    background-color: hsl(var(--dark-600));
+    margin-top: 0.75rem;
+    min-height: 3.5rem;
+    width: 100%;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.875rem;
+    color: hsl(var(--primary));
+  }
+
+  /* Borrowed Book */
+  /* Conteneur pour un livre emprunté - carte avec dégradé sombre */
+  .borrowed-book {
+    background: linear-gradient(180deg, #12141d 0%, #12151f 100%);
+    padding: 1.25rem;
+    border-radius: 1rem;
+    position: relative;
+  }
+
+  @media (min-width: 475px) {
+    .borrowed-book {
+      width: min-content;
+    }
+  }
+
+  /* Zone d'affichage de la couverture d'un livre emprunté */
+  .borrowed-book_cover {
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    border-radius: 0.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .borrowed-book_cover {
+      padding-left: 4rem;
+      padding-right: 4rem;
+    }
+  }
+
+  /* Tailles de couvertures de livres - standardisées pour cohérence visuelle */
+
+  /* Très petite couverture (icônes, miniatures) */
+  .book-cover_extra_small {
+    width: 28.95px;
+    height: 2.5rem;
+  }
+
+  /* Petite couverture (liste compacte) */
+  .book-cover_small {
+    width: 55px;
+    height: 76px;
+  }
+
+  /* Moyenne (détails livre) */
+  .book-cover_medium {
+    width: 144px;
+    height: 199px;
+  }
+
+  /* Régulière (grille principale) */
+  .book-cover_regular {
+    width: 114px;
+    height: 169px;
+  }
+
+  @media (min-width: 475px) {
+    .book-cover_regular {
+      width: 174px;
+      height: 239px;
+    }
+  }
+
+  /* Large (page détail complète) */
+  .book-cover_wide {
+    width: 256px;
+    height: 354px;
+  }
+
+  @media (min-width: 475px) {
+    .book-cover_wide {
+      width: 296px;
+      height: 404px;
+    }
+  }
+
+  /* Grille de livres - affichage en mosaïque responsive */
+  .book-list {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+  }
+
+  @media (max-width: 474px) {
+    .book-list {
+      justify-content: space-between;
+    }
+  }
+
+  @media (min-width: 475px) {
+    .book-list {
+      gap: 2.5rem;
+    }
+  }
+
+  /* Book Overview */
+  /* Page détail d'un livre - layout responsive */
+  .book-overview {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: 3rem;
+  }
+
+  @media (min-width: 640px) {
+    .book-overview {
+      gap: 8rem;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .book-overview {
+      flex-direction: row;
+      gap: 2rem;
+    }
+  }
+
+  /* Titre principal de la page détail livre */
+  .book-overview h1 {
+    font-size: 3rem;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 1.1;
+  }
+
+  @media (min-width: 768px) {
+    .book-overview h1 {
+      font-size: 4.5rem;
+      line-height: 1.05;
+    }
+  }
+
+  /* Informations du livre (auteur, édition, etc.) */
+  .book-info {
+    margin-top: 1.75rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 1.25rem;
+    color: var(--light-100);
+  }
+
+  /* Nombre d'exemplaires disponibles */
+  .book-copies {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 0.25rem;
+  }
+
+  .book-copies p {
+    font-size: 1.25rem;
+    color: var(--light-100);
+  }
+
+  .book-copies p span {
+    margin-left: 0.5rem;
+    font-weight: 600;
+    color: hsl(var(--primary));
+  }
+
+  /* Description du livre - texte justifié */
+  .book-description {
+    margin-top: 0.5rem;
+    text-align: justify;
+    font-size: 1.25rem;
+    color: var(--light-100);
+  }
+
+  /* Bouton d'action principal sur la page détail */
+  .book-overview_btn {
+    margin-top: 1rem;
+    min-height: 3.5rem;
+    width: fit-content;
+    background-color: hsl(var(--primary));
+    color: hsl(var(--dark-100));
+    border-radius: 0.375rem;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+  }
+
+  .book-overview_btn:hover {
+    background-color: hsl(var(--primary) / 0.9);
+  }
+
+  @media (max-width: 767px) {
+    .book-overview_btn {
+      width: 100%;
+    }
+  }
+
+  /* File Upload */
+  .upload-btn {
+    display: flex;
+    min-height: 3.5rem;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    border-radius: 0.5rem;
+    background-color: #1e2128;
+    border: none;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 1rem;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .upload-btn:hover {
+    background-color: #252a34;
+  }
+
+  .upload-filename {
+    margin-top: 0.25rem;
+    text-align: center;
+    font-size: 0.75rem;
+    line-height: 1rem;
+  }
+
+  .progress {
+    border-radius: 9999px;
+    background-color: #16a34a;
+    padding: 0.125rem;
+    text-align: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--light-100);
+  }
+
+  /* Search */
+  .search {
+    position: relative;
+    margin-top: 2.5rem;
+    display: flex;
+    min-height: 3.5rem;
+    width: 100%;
+    align-items: center;
+    border-radius: 0.75rem;
+    background-color: hsl(var(--dark-300));
+    padding: 1rem;
+  }
+
+  .search-input {
+    width: 100%;
+    border: none;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  .search-input::placeholder {
+    font-weight: 400;
+    color: var(--light-100);
+  }
+
+  .search-input:focus-visible {
+    outline: none;
+    box-shadow: none;
+  }
+
+  /* Book Receipt */
+  .book-receipt_admin-btn {
+    background-color: var(--light-300);
+    border-radius: 0.375rem;
+    color: var(--primary-admin);
+    font-weight: 600;
+  }
+
+  .book-receipt_admin-btn:hover {
+    background-color: var(--light-300) / 0.8;
+  }
+
+  /* Book Ticket */
+  /* Ticket de livre imprimable - format reçu avec détails */
+  #book-ticket {
+    position: relative;
+    margin-top: 2.5rem;
+    display: none;
+    width: 544px;
+    overflow: hidden;
+    background-color: hsl(var(--dark-300));
+    padding: 2rem;
+  }
+
+  /* Détails du livre dans le ticket - éléments de liste stylés */
+  #book-ticket #book-details div {
+    margin-bottom: 0.25rem;
+    border-radius: 0.375rem;
+    border: 1px solid var(--light-100) / 0.1;
+    padding: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  /* Cercles décoratifs sur les côtés du ticket */
+  #book-ticket #book-divider div:first-child {
+    position: absolute;
+    left: -0.875rem;
+    top: 50%;
+    width: 1.75rem;
+    height: 1.75rem;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    background-color: #000000;
+  }
+
+  /* Cercles décoratifs en bas du ticket */
+  .book-ticket-circles {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1.5rem;
+    display: flex;
+    flex-direction: row;
+    gap: 0.375rem;
+  }
+
+  /* Page 404 - élément non trouvé */
+  #not-found {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    width: 100%;
+  }
+
+  /* Titre d'erreur 404 */
+  #not-found h4 {
+    color: #ffffff;
+    margin-top: 1.5rem;
+    font-weight: 600;
+    font-size: 1.5rem;
+  }
+
+  /* Message d'erreur 404 */
+  #not-found p {
+    color: var(--light-100);
+    width: 360px;
+    margin-top: 0.25rem;
+  }
+
+  /* Bouton de retour sur la page 404 */
+  .not-found-btn {
+    background-color: hsl(var(--primary));
+    font-family: 'Bebas Neue', sans-serif;
+    min-width: 360px;
+    margin-top: 1.5rem;
+    color: hsl(var(--dark-100));
+    font-size: 1.25rem;
+    min-height: 3rem;
+    border-radius: 0.375rem;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+  }
+
+  .not-found-btn:hover {
+    background-color: hsl(var(--primary) / 0.9);
+  }
+
+  /* Navigation par pages - résultats de recherche */
+  #pagination {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 0.75rem;
+  }
+
+  /* Bouton de pagination avec fond clair */
+  .pagination-btn_light {
+    background-color: var(--light-300);
+    color: var(--dark-300);
+  }
+
+  .pagination-btn_light:hover {
+    background-color: var(--light-300) / 0.7;
+  }
+
+  /* Bouton de pagination avec fond sombre */
+  .pagination-btn_dark {
+    background-color: hsl(var(--dark-300));
+  }
+
+  .pagination-btn_dark:hover {
+    background-color: hsl(var(--dark-100));
+  }
+
+  /* Texte d'information de pagination */
+  #pagination p {
+    font-size: 0.875rem;
+    display: inline-flex;
+    align-items: center;
+    font-weight: 600;
+    padding: 0.375rem 1rem;
+    border-radius: 0.375rem;
+    text-align: center;
+  }
+
+  /* Sélecteur de tri/filtrage - dropdown personnalisé */
+  .select-trigger {
+    width: 10rem;
+    height: 2.5rem;
+    padding: 1rem;
+    background-color: hsl(var(--dark-300));
+    color: var(--light-100);
+    border: 1px solid hsl(var(--dark-100));
+    border-radius: 0.375rem;
+  }
+
+  /* Contenu du sélecteur - liste des options */
+  .select-content {
+    background-color: hsl(var(--dark-300));
+    color: hsl(var(--light-100));
+    border: 1px solid hsl(var(--dark-100));
+    border-radius: 0.375rem;
+  }
+
+  /* Élément individuel du sélecteur */
+  .select-item {
+    background-color: hsl(var(--dark-300));
+    color: hsl(var(--light-100));
+  }
+
+  .select-item:focus {
+    background-color: hsl(var(--dark-600));
+    color: hsl(var(--light-100));
+  }
+}
+
+@layer utilities {
+  /* Dégradés d'arrière-plan personnalisés - utilisés pour les éléments décoratifs */
+
+  /* Dégradé vertical sombre - utilisé pour les cartes et sections */
+  .gradient-vertical {
+    background: linear-gradient(180deg, #12141d 0%, #12151f 100%);
+  }
+
+  /* Dégradé gris neutre - pour les éléments secondaires */
+  .gradient-gray {
+    background: linear-gradient(270deg, #37363a 0%, #353637 100%);
+  }
+
+  /* Dégradé bleu - accent pour certains éléments */
+  .gradient-blue {
+    background: linear-gradient(180deg, #232839 0%, #12141d 100%);
+  }
+
+  /* Pages d'authentification - connexion et inscription */
+
+  /* Conteneur principal des pages d'authentification */
+  .auth-container {
+    position: relative;
+    display: flex;
+    flex-direction: column-reverse;
+    color: var(--light-100);
+  }
+
+  @media (min-width: 640px) {
+    .auth-container {
+      flex-direction: row;
+    }
+  }
+
+  /* Formulaire d'authentification avec fond à motifs */
+  .auth-form {
+    margin-top: auto;
+    margin-bottom: auto;
+    display: flex;
+    flex: 1 1 0%;
+    align-items: center;
+    height: 100%;
+    min-height: 100vh;
+    background-image: url('/images/pattern.webp');
+    background-size: cover;
+    background-position: top;
+    background-color: #16191e;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+
+  /* Boîte de formulaire de connexion/inscription */
+  .auth-box {
+    background: linear-gradient(180deg, #12141d 0%, #12151f 100%);
+    margin: auto;
+    display: flex;
+    max-width: 28rem;
+    flex-direction: column;
+    gap: 1.5rem;
+    border-radius: 0.5rem;
+    padding: 2.5rem;
+  }
+
+  /* Zone d'illustration sur les pages d'authentification */
+  .auth-illustration {
+    position: sticky;
+    height: 10rem;
+    width: 100%;
+    top: 0;
+  }
+
+  @media (min-width: 640px) {
+    .auth-illustration {
+      height: 100vh;
+      flex: 1;
+    }
+  }
+
+  /* Layout principal de l'application - conteneur racine */
+
+  /* Structure principale de l'application */
+  .root-container {
+    display: flex;
+    min-height: 100vh;
+    flex: 1;
+    flex-direction: column;
+    background-image: var(--pattern);
+    background-size: cover;
+    background-position: top;
+    background-color: hsl(var(--dark-100));
+    padding: 1.25rem 1.25rem 4rem;
+  }
+
+  @media (min-width: 475px) {
+    .root-container {
+      padding-left: 2.5rem;
+      padding-right: 2.5rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .root-container {
+      padding-left: 4rem;
+      padding-right: 4rem;
+    }
+  }
+
+  /* Pages de détails de livre - layout spécialisé */
+
+  /* Conteneur pour la page détail d'un livre */
+  .book-details {
+    margin-bottom: 5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .book-details {
+      margin-top: 9rem;
+      margin-bottom: 5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 4rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .book-details {
+      flex-direction: row;
+    }
+  }
+
+  /* Sous-titres sur les pages de détails */
+  .book-details h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: hsl(var(--primary));
+  }
+
+  .library {
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    max-width: 36rem;
+    width: 100%;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .library-subtitle {
+    font-size: 1.125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #d6e0ff;
+  }
+
+  .library-title {
+    margin-top: 0.5rem;
+    font-size: 1.875rem;
+    font-weight: 600;
+    color: #ffffff;
+  }
+
+  @media (min-width: 480px) {
+    .library-title {
+      font-size: 3rem;
+    }
+  }
+}
+
+@layer utilities {
+  /* Text colors */
+  .text-green-100 {
+    color: var(--green-100);
+  }
+  .text-green-400 {
+    color: var(--green-400);
+  }
+  .text-green-500 {
+    color: var(--green-500);
+  }
+  .text-green-800 {
+    color: var(--green-800);
+  }
+
+  .text-red-400 {
+    color: var(--red-400);
+  }
+  .text-red-500 {
+    color: var(--red-500);
+  }
+  .text-red-800 {
+    color: var(--red-800);
+  }
+
+  .text-blue-100 {
+    color: var(--blue-100);
+  }
+
+  .text-light-100 {
+    color: var(--light-100);
+  }
+  .text-light-200 {
+    color: var(--light-200);
+  }
+  .text-light-300 {
+    color: var(--light-300);
+  }
+  .text-light-400 {
+    color: var(--light-400);
+  }
+  .text-light-500 {
+    color: var(--light-500);
+  }
+  .text-light-600 {
+    color: var(--light-600);
+  }
+  .text-light-700 {
+    color: var(--light-700);
+  }
+  .text-light-800 {
+    color: var(--light-800);
+  }
+
+  .text-dark-100 {
+    color: var(--dark-100);
+  }
+  .text-dark-200 {
+    color: var(--dark-200);
+  }
+  .text-dark-300 {
+    color: var(--dark-300);
+  }
+  .text-dark-400 {
+    color: var(--dark-400);
+  }
+  .text-dark-500 {
+    color: var(--dark-500);
+  }
+  .text-dark-600 {
+    color: var(--dark-600);
+  }
+  .text-dark-700 {
+    color: var(--dark-700);
+  }
+  .text-dark-800 {
+    color: var(--dark-800);
+  }
+
+  .text-gray-100 {
+    color: var(--gray-100);
+  }
+
+  /* Background colors */
+  .bg-green-100 {
+    background-color: var(--green-100);
+  }
+  .bg-green-400 {
+    background-color: var(--green-400);
+  }
+  .bg-green-500 {
+    background-color: var(--green-500);
+  }
+  .bg-green-800 {
+    background-color: var(--green-800);
+  }
+
+  .bg-red-400 {
+    background-color: var(--red-400);
+  }
+  .bg-red-500 {
+    background-color: var(--red-500);
+  }
+  .bg-red-800 {
+    background-color: var(--red-800);
+  }
+
+  .bg-blue-100 {
+    background-color: var(--blue-100);
+  }
+
+  .bg-light-100 {
+    background-color: var(--light-100);
+  }
+  .bg-light-200 {
+    background-color: var(--light-200);
+  }
+  .bg-light-300 {
+    background-color: var(--light-300);
+  }
+  .bg-light-400 {
+    background-color: var(--light-400);
+  }
+  .bg-light-500 {
+    background-color: var(--light-500);
+  }
+  .bg-light-600 {
+    background-color: var(--light-600);
+  }
+  .bg-light-700 {
+    background-color: var(--light-700);
+  }
+  .bg-light-800 {
+    background-color: var(--light-800);
+  }
+
+  .bg-dark-100 {
+    background-color: var(--dark-100);
+  }
+  .bg-dark-200 {
+    background-color: var(--dark-200);
+  }
+  .bg-dark-300 {
+    background-color: var(--dark-300);
+  }
+  .bg-dark-400 {
+    background-color: var(--dark-400);
+  }
+  .bg-dark-500 {
+    background-color: var(--dark-500);
+  }
+  .bg-dark-600 {
+    background-color: var(--dark-600);
+  }
+  .bg-dark-700 {
+    background-color: var(--dark-700);
+  }
+  .bg-dark-800 {
+    background-color: var(--dark-800);
+  }
+
+  .bg-gray-100 {
+    background-color: var(--gray-100);
+  }
 }

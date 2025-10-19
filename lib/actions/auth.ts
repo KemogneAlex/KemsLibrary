@@ -2,8 +2,10 @@
 import { signIn } from '@/auth';
 import { db } from '@/database/drizzle';
 import { users } from '@/database/schema';
+import config from '@/lib/config';
 import ratelimit from '@/lib/ratelimit';
-import { hash, compare } from 'bcryptjs';
+import { workflowClient } from '@/lib/workflow';
+import { compare, hash } from 'bcryptjs';
 import { eq } from 'drizzle-orm';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -46,7 +48,10 @@ export const signInWithCredentials = async (
     });
 
     if (result?.error) {
-      return { success: false, error: 'Erreur de connexion. Veuillez réessayer.' };
+      return {
+        success: false,
+        error: 'Erreur de connexion. Veuillez réessayer.',
+      };
     }
 
     return { success: true };
@@ -88,6 +93,14 @@ export const signUp = async (params: AuthCredentials) => {
       universityId,
       password: hashedPassword,
       universityCard,
+    });
+
+    await workflowClient.trigger({
+      url: `${config.env.prodApiEndpoint}/api/workflows/onboarding`,
+      body: {
+        email,
+        fullName,
+      },
     });
 
     // Tenter de connecter automatiquement l'utilisateur après l'inscription

@@ -1,7 +1,8 @@
 'use client';
 
 import config from '@/lib/config';
-import { IKImage, IKUpload, ImageKitProvider } from 'imagekitio-next';
+import { cn } from '@/lib/utils';
+import { IKImage, IKUpload, IKVideo, ImageKitProvider } from 'imagekitio-next';
 import Image from 'next/image';
 import { useRef, useState } from 'react';
 import { toast } from 'sonner';
@@ -35,14 +36,40 @@ const authenticator = async () => {
   }
 };
 
-const ImageUpload = ({
-  onFileChange,
-}: {
+interface Props {
+  type: 'image' | 'video';
+  accept: string;
+  placeholder: string;
+  folder: string;
+  variant: 'dark' | 'light';
   onFileChange: (filePath: string) => void;
-}) => {
+  value?: string;
+}
+
+const FileUpload = ({
+  type,
+  accept,
+  placeholder,
+  folder,
+  variant,
+  onFileChange,
+  value,
+}: Props) => {
   const ikUploadRef = useRef(null);
-  const [file, setFile] = useState<{ filePath: string } | null>(null);
+  const [file, setFile] = useState<{ filePath: string | null }>({
+    filePath: value ?? null,
+  });
   const [isUploading, setIsUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
+
+  const styles = {
+    button:
+      variant === 'dark'
+        ? 'bg-dark-300'
+        : 'bg-light-600 border-gray-100 border',
+    placeholder: variant === 'dark' ? 'text-light-100' : 'text-slate-500',
+    text: variant === 'dark' ? 'text-light-100' : 'text-dark-400',
+  };
 
   const onError = (error: unknown) => {
     console.log(error);
@@ -51,9 +78,9 @@ const ImageUpload = ({
     const message =
       error instanceof Error
         ? error.message
-        : "Votre image n'a pas pu être téléchargée. Veuillez réessayer.";
+        : `Votre ${type} n'a pas pu être téléchargée. Veuillez réessayer.`;
 
-    toast.error(`Échec de téléchargement d'image : ${message}`);
+    toast.error(`Échec de téléchargement de ${type} : ${message}`);
   };
 
   interface UploadResponse {
@@ -69,7 +96,7 @@ const ImageUpload = ({
       setFile(fileRes);
       onFileChange(fileRes.filePath);
 
-      toast.success(`Image téléchargée avec succès ✅  `, {
+      toast.success(`${type} téléchargée avec succès ✅  `, {
         icon: (
           <Image
             src='/icons/book.svg'
@@ -85,8 +112,24 @@ const ImageUpload = ({
     }
   };
 
-  const onUploadStart = () => {
-    setIsUploading(true);
+  const onValidate = (file: File) => {
+    if (type === 'image') {
+      if (file.size > 20 * 1024 * 1024) {
+        toast.error('Le fichier est trop volumineux', {
+          description: 'Veuillez téléverser une image de moins de 20 Mo.',
+        });
+        return false;
+      }
+    } else if (type === 'video') {
+      if (file.size > 50 * 1024 * 1024) {
+        toast.error('Le fichier est trop volumineux', {
+          description: 'Veuillez téléverser une vidéo de moins de 50 Mo.',
+        });
+        return false;
+      }
+    }
+
+    return true;
   };
 
   return (
@@ -96,15 +139,26 @@ const ImageUpload = ({
       authenticator={authenticator}
     >
       <IKUpload
-        className='hidden'
         ref={ikUploadRef}
         onError={onError}
         onSuccess={onSuccess}
-        onUploadStart={onUploadStart}
-        fileName='test-upload.png'
+        useUniqueFileName={true}
+        validateFile={onValidate}
+        onUploadStart={() => {
+          setIsUploading(true);
+          setProgress(0);
+        }}
+        onUploadProgress={({ loaded, total }) => {
+          const percent = Math.round((loaded / total) * 100);
+
+          setProgress(percent);
+        }}
+        folder={folder}
+        accept={accept}
+        className='hidden'
       />
       <button
-        className='upload-btn cursor-pointer'
+        className={cn('upload-btn', styles.button, 'cursor-pointer')}
         disabled={isUploading}
         onClick={e => {
           e.preventDefault();
@@ -131,23 +185,39 @@ const ImageUpload = ({
               height={20}
               className='object-contain'
             />
-            <p className='text-base text-light-100'>Télécharger un fichier</p>
+            <p className={cn('text-base', styles.placeholder)}>{placeholder}</p>
           </>
         )}
         {file && !isUploading && (
-          <p className='upload-filename'>{file.filePath}</p>
+          <p className={cn('upload-filename', styles.text)}>{file.filePath}</p>
         )}
       </button>
-      {file && (
-        <IKImage
-          alt={file.filePath}
-          path={file.filePath}
-          width={500}
-          height={300}
-        />
+
+      {progress > 0 && progress !== 100 && (
+        <div className='w-full rounded-full bg-green-200'>
+          <div className='progress' style={{ width: `${progress}%` }}>
+            {progress}%
+          </div>
+        </div>
       )}
+
+      {file &&
+        (type === 'image' ? (
+          <IKImage
+            alt={file.filePath || 'Uploaded image'}
+            path={file.filePath || ''}
+            width={500}
+            height={300}
+          />
+        ) : type === 'video' ? (
+          <IKVideo
+            path={file.filePath || ''}
+            controls={true}
+            className='h-96 w-full rounded-xl'
+          />
+        ) : null)}
     </ImageKitProvider>
   );
 };
 
-export default ImageUpload;
+export default FileUpload;

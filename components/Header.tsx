@@ -20,7 +20,7 @@ const Header = () => {
             }}
             className='mb-10'
           >
-            <Button>Déconnexion</Button>
+            <Button className='cursor-pointer'>Déconnexion</Button>
           </form>
         </li>
       </ul>

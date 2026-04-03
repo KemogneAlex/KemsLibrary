@@ -13,33 +13,33 @@ import { redirect } from 'next/navigation';
 export const signInWithCredentials = async (
   params: Pick<AuthCredentials, 'email' | 'password'>
 ) => {
-  const { email, password } = params;
-
-  // Rate limiting pour la connexion
-  const ip = (await headers()).get('x-forwarded-for') || '127.0.0.1';
-  const { success } = await ratelimit.limit(ip);
-
-  if (!success) return redirect('/too-fast');
-
-  // Vérifier d'abord si l'utilisateur existe
-  const user = await db
-    .select()
-    .from(users)
-    .where(eq(users.email, email))
-    .limit(1);
-
-  if (user.length === 0) {
-    return { success: false, error: 'Email ou mot de passe incorrect' };
-  }
-
-  // Vérifier le mot de passe
-  const isPasswordValid = await compare(password, user[0].password);
-
-  if (!isPasswordValid) {
-    return { success: false, error: 'Email ou mot de passe incorrect' };
-  }
-
   try {
+    const { email, password } = params;
+
+    // Rate limiting pour la connexion
+    const ip = (await headers()).get('x-forwarded-for') || '127.0.0.1';
+    const { success } = await ratelimit.limit(ip);
+
+    if (!success) return redirect('/too-fast');
+
+    // Vérifier d'abord si l'utilisateur existe
+    const user = await db
+      .select()
+      .from(users)
+      .where(eq(users.email, email))
+      .limit(1);
+
+    if (user.length === 0) {
+      return { success: false, error: 'Email ou mot de passe incorrect' };
+    }
+
+    // Vérifier le mot de passe
+    const isPasswordValid = await compare(password, user[0].password);
+
+    if (!isPasswordValid) {
+      return { success: false, error: 'Email ou mot de passe incorrect' };
+    }
+
     // Utiliser NextAuth pour la gestion de session uniquement
     const result = await signIn('credentials', {
       email,
@@ -56,10 +56,10 @@ export const signInWithCredentials = async (
 
     return { success: true };
   } catch (error) {
-    console.log(error, 'Erreur de connexion');
+    console.error('Erreur signInWithCredentials:', error);
     return {
       success: false,
-      error: 'Erreur de connexion. Veuillez réessayer.',
+      error: 'Erreur serveur. Veuillez réessayer plus tard.',
     };
   }
 };
